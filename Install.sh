@@ -69,8 +69,8 @@ sudo dnf install rustc cargo -y
 sudo dnf install python3-pyyaml -y
 
 ### Unzip and move PCAP
-tar xvcf pcap/*.pcap
-cp *.pcap /etc/suricata/
+#tar xvcf pcap/*.pcap
+#cp *.pcap /etc/suricata/
 
 #Set Elastic Stack Version
 ELASTIC_VERSION="8.7.0"
@@ -191,7 +191,7 @@ tar xzvf suricata-6.0.10.tar.gz
 cd suricata-6.0.10
 
 ##Install Suricata
-./configure --prefix=/opt/suricata --enable-lua --enable-geoip --localstatedir=/var/log/suricatavim  --sysconfdir=/etc --disable-gccmarch-native --enable-profiling --enable-http2-decompression --enable-python --enable-af-packet
+./configure --prefix=/opt/suricata --enable-lua --enable-geoip --localstatedir=/var/log/suricata  --sysconfdir=/etc --disable-gccmarch-native --enable-profiling --enable-http2-decompression --enable-python --enable-af-packet
 make -j$(nproc)
 make install-full
 cd ..
@@ -228,11 +228,17 @@ sudo rpm -vi filebeat-${ELASTIC_VERSION}-x86_64.rpm
 sudo mv /etc/filebeat/filebeat.yml /etc/filebeat/filebeat.yml.old
 sudo cp filebeat.yml /etc/filebeat/filebeat.yml
 
+##Set IP for filebeat to connect to
+FILEBEAT_CONFIG_FILE="/etc/filebeat/filebeat.yml"
+sed -i "s/^setup\.kibana\.host:.*/setup.kibana.host: \"$HOST_IP:5601\"/g" "$FILEBEAT_CONFIG_FILE"
+
+echo "setup.kibana.host has been set to $HOST_IP:5601 in $FILEBEAT_CONFIG_FILE"
+
 sudo mv /etc/filebeat/modules.d/zeek.yml.disabled /etc/filebeat/modules.d/zeek.yml.disabled.old
 sudo cp zeek.yml.disabled /etc/filebeat/modules.d/zeek.yml.disabled 
 
 sudo mv /etc/filebeat/modules.d/suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled.old
-sudo cp suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled 
+sudo cp suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled
 
 
 ####################### Configure Firewall Rules #######################
@@ -256,8 +262,8 @@ while [ $countdown -gt 0 ]; do
 done
 
 sudo filebeat modules enable suricata zeek
-#sudo filebeat setup -e
-#sudo systemctl start filebeat
+sudo filebeat setup -e
+sudo systemctl start filebeat
 
 ####################### Comments #######################
 
@@ -272,6 +278,7 @@ echo " "
 ############### URL for more PCAP to analyze ####################
 #### https://www.malware-traffic-analysis.net/training-exercises.html
 
-#cd /opt/zeek/logs/current
-#/./opt/zeek/bin/zeek -r /etc/suricata/2023-03-Unit42-Wireshark-quiz.pcap 
+cd /opt/zeek/logs/
+#/./opt/zeek/bin/zeek -r /etc/suricata/2023-03-Unit42-Wireshark-quiz.pcap
+cd /var/log/suricata/
 #/./opt/suricata/bin/suricata -r /etc/suricata/2023-03-Unit42-Wireshark-quiz.pcap 

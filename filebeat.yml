@@ -8,6 +8,8 @@ filebeat.config.modules:
   # Period on which files under path should be checked for changes
   #reload.period: 10s
 
+setup.kibana.host: "127.0.0.1:5601"
+
 output.elasticsearch.hosts: ['https://localhost:9200']
 output.elasticsearch.username: "elastic"
 output.elasticsearch.password: "password"

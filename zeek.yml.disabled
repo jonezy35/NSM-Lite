@@ -83,4 +83,6 @@
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
-    var.paths: /opt/zeek/logs/*/*.log
+    var.paths: 
+      - /opt/zeek/logs/*/*.log
+      - /opt/zeek/logs/*.log
