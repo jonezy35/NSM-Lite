@@ -195,8 +195,6 @@ cp suricata.yaml /etc/suricata/suricata.yaml
 
 echo "The default suricata.yaml file has been created at /etc/suricata.yaml"
 
-##Create suricata systemd service file
-
 
 #Create the systemd service file for Suricata
 sudo mv suricata.service /etc/systemd/system/suricata.service
