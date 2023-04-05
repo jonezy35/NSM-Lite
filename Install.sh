@@ -98,7 +98,7 @@ sleep 30
 # Set the elastic user password to 'password'
 TEMP_PASSWORD=$(sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto --batch --url https://localhost:9200 | grep '^PASSWORD elastic' | awk '{print $4}')
 curl --insecure -u elastic:${TEMP_PASSWORD} -XPOST "https://localhost:9200/_security/user/elastic/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
-curl --insecure -u elastic:${TEMP_PASSWORD} -XPOST "https://localhost:9200/_security/user/kibana_system/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
+curl --insecure -u elastic:password -XPOST "https://localhost:9200/_security/user/kibana_system/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
 #curl --insecure -u elastic:${TEMP_PASSWORD} -X POST "https://localhost:9200/_security/user/beats_user" -H 'Content-Type: application/json' -d'
 # {
 #  "password": "password",
