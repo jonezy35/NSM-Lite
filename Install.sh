@@ -111,6 +111,8 @@ EOD
 
 # Set the kibana_system password to 'password'
 curl --insecure -u elastic:password -XPOST "https://localhost:9200/_security/user/kibana_system/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
+
+
 #curl --insecure -u elastic:${TEMP_PASSWORD} -X POST "https://localhost:9200/_security/user/beats_user" -H 'Content-Type: application/json' -d'
 # {
 #  "password": "password",
