@@ -231,10 +231,10 @@ echo "The sensor is now installed and configured"
 echo " "
 echo "Starting Services in 10 seconds..."
 countdown=10
-while [ \$countdown -gt 0 ]; do
-  printf "\rCountdown: %2d seconds remaining" \$countdown
+while [ $countdown -gt 0 ]; do
+  printf "\rCountdown: %2d seconds remaining" $countdown
   sleep 1
-  countdown=\$((countdown - 1))
+  countdown=$((countdown - 1))
 done
 
 sudo filebeat modules enable suricata zeek
