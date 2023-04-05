@@ -235,6 +235,12 @@ sudo mv /etc/filebeat/modules.d/suricata.yml.disabled /etc/filebeat/modules.d/su
 sudo cp suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled 
 
 
+####################### Configure Firewall Rules #######################
+
+sudo firewall-cmd --add-port 5601/tcp --permanent
+sudo firewall-cmd --add-port 9200/tcp --permanent
+sudo firewall-cmd --reload 
+
 ###Start Services###
 
 echo " "
