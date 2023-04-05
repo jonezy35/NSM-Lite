@@ -34,7 +34,7 @@ elasticsearch.password: 'password'
 
 # Enables you to specify a path to the PEM file for the certificate
 # authority for your Elasticsearch instance.
-elasticsearch.ssl.certificateAuthorities: [ "/etc/kibana/certs/elasticsearch-ca.pem" ]
+#elasticsearch.ssl.certificateAuthorities: [ "/etc/kibana/certs/elasticsearch-ca.pem" ]
 
 # To disregard the validity of SSL certificates, change this setting's value to 'none'.
 elasticsearch.ssl.verificationMode: none

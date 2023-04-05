@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
-############################################### To DO: Find Better PCAP ############################################### 
+############################################### To Do: Find Better PCAP ###############################################
+
+############################################### To Do: Add firewall rules ############################################# 
 echo " "
 echo " "
 echo -e "This script \033[4mMUST\033[0m be run as root"
@@ -38,6 +40,7 @@ sudo dnf install wget -y
 sudo dnf install util-linux-user -y
 sudo dnf install net-tools -y
 sudo dnf install unzip -y
+sudo dnf install expect -y
 ###Install needed zeek dependencies
 sudo dnf install cmake -y
 sudo dnf install make -y
@@ -96,8 +99,17 @@ echo "Changing default elastic password..."
 sleep 30
 
 # Set the elastic user password to 'password'
-TEMP_PASSWORD=$(sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto --batch --url https://localhost:9200 | grep '^PASSWORD elastic' | awk '{print $4}')
-curl --insecure -u elastic:${TEMP_PASSWORD} -XPOST "https://localhost:9200/_security/user/elastic/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
+# Run the elasticsearch-reset-password command using expect
+/usr/bin/expect <<EOD
+spawn sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+expect "Please enter new password for user \\[elastic\\]: "
+send "password"
+expect "Please confirm new password for user \\[elastic\\]: "
+send "password"
+expect eof
+EOD
+
+# Set the kibana_system password to 'password'
 curl --insecure -u elastic:password -XPOST "https://localhost:9200/_security/user/kibana_system/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
 #curl --insecure -u elastic:${TEMP_PASSWORD} -X POST "https://localhost:9200/_security/user/beats_user" -H 'Content-Type: application/json' -d'
 # {
