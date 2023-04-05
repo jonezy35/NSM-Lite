@@ -79,7 +79,6 @@ sudo sysctl -w vm.max_map_count=262144
 sudo echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf | sudo sudo sysctl -p
 
 ##Install Elasticsearch
-cd /home/
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTIC_VERSION}-x86_64.rpm
 sudo rpm --install elasticsearch-${ELASTIC_VERSION}-x86_64.rpm
 
@@ -110,7 +109,6 @@ curl --insecure -u elastic:${TEMP_PASSWORD} -XPOST "https://localhost:9200/_secu
 #################### Kibana #######################
 
 ##Install Kibana
-cd /home/
 wget https://artifacts.elastic.co/downloads/kibana/kibana-${ELASTIC_VERSION}-x86_64.rpm
 sudo rpm --install kibana-${ELASTIC_VERSION}-x86_64.rpm
 
@@ -136,7 +134,6 @@ sudo systemctl start kibana.service
 ####################### Zeek #######################
 
 ##Pull down zeek
-cd /home/
 git clone --recurse-submodules https://github.com/zeek/zeek
 cd zeek
 
@@ -144,7 +141,7 @@ cd zeek
 ./configure --prefix=/opt/zeek --localstatedir=/var/log/zeek --conf-files-dir=/etc/zeek --disable-spicy
 make -j$(nproc)
 make install
-cd /home/
+cd ..
 
 ##Configure Zeek
 sudo mv /etc/zeek/node.cfg /etc/zeek/node.cfg.old
@@ -172,7 +169,6 @@ source ~/.bashrc
 ####################### Suricata ####################### 
 
 ##Pull down Suricata
-cd /home/
 curl -L -O https://www.openinfosecfoundation.org/download/suricata-6.0.10.tar.gz
 tar xzvf suricata-6.0.10.tar.gz
 cd suricata-6.0.10
@@ -181,7 +177,7 @@ cd suricata-6.0.10
 ./configure --prefix=/opt/suricata --enable-lua --enable-geoip --localstatedir=/var/log/suricatavim  --sysconfdir=/etc --disable-gccmarch-native --enable-profiling --enable-http2-decompression --enable-python --enable-af-packet
 make -j$(nproc)
 make install-full
-cd /home/
+cd ..
 
 ##Configure Suricata
 
@@ -208,7 +204,6 @@ echo "Suricata systemd service file has been created and enabled."
 ####################### Filebeat #######################
 
 ##Install Filebeat
-cd /home/
 sudo curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${ELASTIC_VERSION}-x86_64.rpm
 sudo rpm -vi filebeat-${ELASTIC_VERSION}-x86_64.rpm
 
