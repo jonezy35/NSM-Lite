@@ -272,7 +272,7 @@ echo " "
 ############### URL for more PCAP to analyze ####################
 #### https://www.malware-traffic-analysis.net/training-exercises.html
 
-cd /opt/zeek/logs/
+#cd /opt/zeek/logs/
 #/./opt/zeek/bin/zeek -r /etc/suricata/2023-03-Unit42-Wireshark-quiz.pcap
-cd /var/log/suricata/
+#cd /var/log/suricata/
 #/./opt/suricata/bin/suricata -r /etc/suricata/2023-03-Unit42-Wireshark-quiz.pcap 
