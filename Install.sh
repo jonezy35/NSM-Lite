@@ -68,10 +68,6 @@ sudo dnf install lz4-devel -y
 sudo dnf install rustc cargo -y
 sudo dnf install python3-pyyaml -y
 
-### Unzip and move PCAP
-#tar xvcf pcap/*.pcap
-#cp *.pcap /etc/suricata/
-
 #Set Elastic Stack Version
 ELASTIC_VERSION="8.7.0"
 
