@@ -30,41 +30,12 @@ dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce
 ###Update packages
 sudo dnf update -y
 ###Install needed dependencies
-sudo dnf install tar -y
-sudo dnf install htop -y
-sudo dnf install git -y
-sudo dnf install vim -y
-sudo dnf install wget -y
-sudo dnf install util-linux-user -y
-sudo dnf install net-tools -y
-sudo dnf install unzip -y
-sudo dnf install expect -y
+sudo dnf install tar htop git vim wget util-linux-user net-tools unzip expect -y
+
 ###Install needed zeek dependencies
-sudo dnf install cmake -y
-sudo dnf install make -y
-sudo dnf install gcc -y 
-sudo dnf install gcc-c++ -y 
-sudo dnf install flex -y 
-sudo dnf install bison -y 
-sudo dnf install libpcap-devel -y
-sudo dnf install openssl-devel -y
-sudo dnf install python3 -y
-sudo dnf install python3-devel -y
-sudo dnf install swig -y 
-sudo dnf install zlib-devel -y
+sudo dnf install cmake make gcc gcc-c++ flex bison libpcap-devel openssl-devel python3 python3-devel swig zlib-devel -y
 ###Install needed suricata dependencies
-sudo dnf install pcre-devel -y
-sudo dnf install libyaml-devel -y
-sudo dnf install jansson-devel -y
-sudo dnf install lua-devel -y
-sudo dnf install file-devel -y
-sudo dnf install nspr-devel -y
-sudo dnf install nss-devel -y
-sudo dnf install libcap-ng-devel -y
-sudo dnf install libmaxminddb-devel -y
-sudo dnf install lz4-devel -y
-sudo dnf install rustc cargo -y
-sudo dnf install python3-pyyaml -y
+sudo dnf install pcre-devel libyaml-devel jansson-devel lua-devel file-devel nspr-devel nss-devel libcap-ng-devel libmaxminddb-devel lz4-devel rustc cargo python3-pyyaml -y
 
 #Set Elastic Stack Version
 ELASTIC_VERSION="8.7.0"
