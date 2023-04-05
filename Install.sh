@@ -166,9 +166,6 @@ echo "The default node.cfg file has been created at /etc/zeek/node.cfg"
 #Define the Zeek binary path
 zeek_bin_path="/opt/zeek/bin"
 
-#Check if the path is already present in /etc/profile
-grep -qF "$zeek_bin_path" /etc/profile
-
 #If it's not present, add it
 
 echo "export PATH=\"$zeek_bin_path:\$PATH\"" >> /etc/profile
