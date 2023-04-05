@@ -19,9 +19,6 @@ done
 echo " "
 echo "Starting Script..."
 
-tar xvcf practice.pcap
-cp practice.pcap /etc/suricata/practice.pcap 
-
 # Import RPM GPG key
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 
@@ -68,13 +65,18 @@ sudo dnf install lz4-devel -y
 sudo dnf install rustc cargo -y
 sudo dnf install python3-pyyaml -y
 
+### Unzip and move PCAP
+tar xvcf pcap/*.pcap
+cp *.pcap /etc/suricata/
+
 #Set Elastic Stack Version
 ELASTIC_VERSION="8.7.0"
 
 ################### Elasticsearch ####################
 
-###Set for Elasticsearch
+###Set maxmapcount for Elasticsearch
 sudo sysctl -w vm.max_map_count=262144
+sudo echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf | sudo sudo sysctl -p
 
 ##Install Elasticsearch
 cd /home/
@@ -98,12 +100,12 @@ sleep 30
 TEMP_PASSWORD=$(sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto --batch --url https://localhost:9200 | grep '^PASSWORD elastic' | awk '{print $4}')
 curl --insecure -u elastic:${TEMP_PASSWORD} -XPOST "https://localhost:9200/_security/user/elastic/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
 curl --insecure -u elastic:${TEMP_PASSWORD} -XPOST "https://localhost:9200/_security/user/kibana_system/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
-curl --insecure -u elastic:${TEMP_PASSWORD} -X POST "https://localhost:9200/_security/user/beats_user" -H 'Content-Type: application/json' -d'
-{
-  "password": "password",
-  "roles": ["ingest_admin", "remote_monitoring_agent", "beats_admin"]
-}
-'
+#curl --insecure -u elastic:${TEMP_PASSWORD} -X POST "https://localhost:9200/_security/user/beats_user" -H 'Content-Type: application/json' -d'
+# {
+#  "password": "password",
+#  "roles": ["ingest_admin", "remote_monitoring_agent", "beats_admin"]
+#}
+#'
 
 #################### Kibana #######################
 
@@ -145,35 +147,9 @@ make install
 cd /home/
 
 ##Configure Zeek
-node=/etc/zeek/node.cfg
-cat > $node << EOF
-[zeek]
-type=standalone
-host=localhost
-interface=af_packet::$interface
-af_packet_fanout_id=23
-#
-#[logger]
-#type=logger
-#host=localhost
-#
-#[manager]
-#type=manager
-#host=localhost
-#
-#[proxy-1]
-#type=proxy
-#host=localhost
-#
-#[worker-1]
-#type=worker
-#host=localhost
-#interface=
-#
-#[worker-2]
-#type=worker
-##interface=
-EOF
+sudo mv /etc/zeek/node.cfg /etc/zeek/node.cfg.old
+sudo cp node.cfg /etc/zeek/node.cfg 
+
 
 echo "The default node.cfg file has been created at /etc/zeek/node.cfg"
 
@@ -217,31 +193,9 @@ echo "The default suricata.yaml file has been created at /etc/suricata.yaml"
 
 ##Create suricata systemd service file
 
-#Check if the user is running the script as root
-if [ "$(id -u)" -ne 0 ]; then
-  echo "Please run this script as root or with sudo."
-  exit 1
-fi
 
 #Create the systemd service file for Suricata
-cat > /etc/systemd/system/suricata.service << EOF
-[Unit]
-Description=Suricata Intrusion Detection System
-After=network.target
-
-[Service]
-Type=simple
-ExecStart=/opt/suricata/bin/suricata -c /etc/suricata/suricata.yaml -r /etc/suricata/practice.pcap
-ExecReload=/bin/kill -HUP \$MAINPID
-KillMode=mixed
-Restart=on-failure
-RestartSec=2
-LimitNOFILE=65536
-LimitNPROC=8192
-
-[Install]
-WantedBy=multi-user.target
-EOF
+sudo mv suricata.service /etc/systemd/system/suricata.service
 
 #Reload systemd configuration
 systemctl daemon-reload
@@ -258,130 +212,17 @@ cd /home/
 sudo curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${ELASTIC_VERSION}-x86_64.rpm
 sudo rpm -vi filebeat-${ELASTIC_VERSION}-x86_64.rpm
 
-##Configure Filebeat to send Suricata and Zeek logs to Elasticsearch
-cat > /etc/filebeat/filebeat.yml << EOL
+##Copy over filebeat configs
+sudo mv /etc/filebeat/filebeat.yml /etc/filebeat/filebeat.yml.old
+sudo cp filebeat.yml /etc/filebeat/filebeat.yml
 
-output.elasticsearch:
-  hosts: ['http://$HOST_IP:9200']
-  username: "elastic"
-  password: "password"
-  ssl.verification.mode: none
+sudo mv /etc/filebeat/modules.d/zeek.yml.disabled /etc/filebeat/modules.d/zeek.yml.disabled.old
+sudo cp zeek.yml.disabled /etc/filebeat/modules.d/zeek.yml.disabled 
 
-output.elasticsearch.hosts: ['https://localhost:9200']
-output.elasticsearch.username: "elastic"
-output.elasticsearch.password: "password"
+sudo mv /etc/filebeat/modules.d/suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled.old
+sudo cp suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled 
 
-output.elasticsearch.ssl.verification_mode: none
 
-processors:
-  - add_host_metadata: ~
-  - add_cloud_metadata: ~
-  - add_docker_metadata: ~
-  - add_kubernetes_metadata: ~
-EOL
-
-cat > /etc/filebeat/modules.d/zeek.yml.disabled << EOL
-# Module: zeek
-# Docs: https://www.elastic.co/guide/en/beats/filebeat/master/filebeat-module-zeek.html
-
-- module: zeek
-  capture_loss:
-    enabled: true
-  connection:
-    enabled: true
-  dce_rpc:
-    enabled: true
-  dhcp:
-    enabled: true
-  dnp3:
-    enabled: true
-  dns:
-    enabled: true
-  dpd:
-    enabled: true
-  files:
-    enabled: true
-  ftp:
-    enabled: true
-  http:
-    enabled: true
-  intel:
-    enabled: true
-  irc:
-    enabled: true
-  kerberos:
-    enabled: true
-  modbus:
-    enabled: true
-  mysql:
-    enabled: true
-  notice:
-    enabled: true
-  ntp:
-    enabled: true
-  ntlm:
-    enabled: true
-  ocsp:
-    enabled: true
-  pe:
-    enabled: true
-  radius:
-    enabled: true
-  rdp:
-    enabled: true
-  rfb:
-    enabled: true
-  signature:
-    enabled: true
-  sip:
-    enabled: true
-  smb_cmd:
-    enabled: true
-  smb_files:
-    enabled: true
-  smb_mapping:
-    enabled: true
-  smtp:
-    enabled: true
-  snmp:
-    enabled: true
-  socks:
-    enabled: true
-  ssh:
-    enabled: true
-  ssl:
-    enabled: true
-  stats:
-    enabled: true
-  syslog:
-    enabled: true
-  traceroute:
-    enabled: true
-  tunnel:
-    enabled: true
-  weird:
-    enabled: true
-  x509:
-    enabled: true
-
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    var.paths: /opt/zeek/logs/*/*.log
-EOL
-
-cat > /etc/filebeat/modules.d/suricata.yml.disabled << EOL
-# Module: suricata
-# Docs: https://www.elastic.co/guide/en/beats/filebeat/master/filebeat-module-suricata.html
-
-- module: suricata
-  # All logs
-  eve:
-    enabled: true
-
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    var.paths: /var/log/suricata/eve.json
-EOL
 ###Start Services###
 
 echo " "

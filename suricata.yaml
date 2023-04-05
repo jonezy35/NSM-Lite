@@ -47,7 +47,7 @@ vars:
 ## Step 2: select the rules to enable or disable
 ##
 
-default-rule-path: /etc/suricata/rules
+default-rule-path: /etc/suricata/rules/
 rule-files:
  - suricata.rules
 # - test.rules
@@ -560,7 +560,7 @@ logging:
 # Settings for reading pcap files
 pcap-file:
   # Uncomment the following line to process a pcap file
-  - filename: /etc/suricata/2023-03-Unit42-Wireshark-quiz.pcap
+  - filename: /etc/suricata/*.pcap
     checksum-checks: yes
     reassembly: yes
 
