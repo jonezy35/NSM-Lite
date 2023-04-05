@@ -101,24 +101,27 @@ sleep 30
 # Set the elastic user password to 'password'
 # Run the elasticsearch-reset-password command using expect
 /usr/bin/expect <<EOD
-spawn sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+spawn sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i
+expect "Please confirm that you would like to continue"
+send "y\r"
 expect "Please enter new password for user \\[elastic\\]: "
-send "password"
+send "password\r"
 expect "Please confirm new password for user \\[elastic\\]: "
-send "password"
+send "password\r"
 expect eof
 EOD
 
 # Set the kibana_system password to 'password'
-curl --insecure -u elastic:password -XPOST "https://localhost:9200/_security/user/kibana_system/_password?pretty" -H 'Content-Type: application/json' -d"{\"password\": \"password\"}"
-
-
-#curl --insecure -u elastic:${TEMP_PASSWORD} -X POST "https://localhost:9200/_security/user/beats_user" -H 'Content-Type: application/json' -d'
-# {
-#  "password": "password",
-#  "roles": ["ingest_admin", "remote_monitoring_agent", "beats_admin"]
-#}
-#'
+/usr/bin/expect <<EOD
+spawn sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u kibana_system -i
+expect "Please confirm that you would like to continue"
+send "y\r"
+expect "Please enter new password for user \\[kibana_system\\]: "
+send "password\r"
+expect "Please confirm new password for user \\[kibana_system\\]: "
+send "password\r"
+expect eof
+EOD
 
 #################### Kibana #######################
 
