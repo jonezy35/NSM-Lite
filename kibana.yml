@@ -12,7 +12,7 @@ server.host: "127.0.0.1"
 
 # Specifies the public URL at which Kibana is available for end users. If
 # `server.basePath` is configured this URL should end with the same basePath.
-server.publicBaseUrl: "http://kb.jones.lan:5601"
+#server.publicBaseUrl:
 
 # The maximum payload size in bytes for incoming server requests.
 #server.maxPayload: 1048576
