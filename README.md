@@ -76,12 +76,12 @@ The logs for the pcap you run will be dated for when the PCAP happened, not for 
 
 ```
 cd /opt/zeek/logs/
-/./opt/zeek/bin/zeek -r </path/to/pcap>
+sudo /./opt/zeek/bin/zeek -r </path/to/pcap>
 ```
 
 ```
 cd /var/log/suricata/
-/./opt/suricata/bin/suricata -r </path/to/pcap>
+sudo /./opt/suricata/bin/suricata -r </path/to/pcap>
 ```
 If you have already run pcap and you wish to clear the index before running new pcap through, simply run:
 
