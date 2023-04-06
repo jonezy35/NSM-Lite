@@ -68,7 +68,7 @@ wget --no-check-certificate "https://drive.google.com/uc?export=download&id=1d6Q
 
 tar xzvf BigPcap.tar.gz
 ``` 
-The pcap is broken up into 15 smaller PCAP files. When you unzip the folder there is a bash script that you can run and it will read all of the PCAP files through zeek and suricata. Because the PCAP is big, the script will take awhile. The data is from 2012, so your logs will be March 2012.
+The pcap is broken up into 15 smaller PCAP files. When you unzip the folder there is a bash script that you can run and it will read all of the PCAP files through zeek and suricata. Because the PCAP is big, the script will take awhile. The data is from 2012, so your logs will be in that time frame.
 
 The logs for the pcap you run will be dated for when the PCAP happened, not for when you read it in. For example: if you read in PCAP from 2017, the logs will be in 2017, even though it is 2023.
 
