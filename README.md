@@ -37,7 +37,7 @@ The NSM kit is designed to provide a comprehensive network monitoring solution b
 
 ### Requirements
 
-This script has been built and tested with Alma Linux 9.1. If you would like support for another linux distro, open an issue and I will be more than happy to create an install script for said distro. 
+This script has been built and tested with Alma Linux 9.1 [Download Alma Linux 9.1 ISO](https://mirrors.almalinux.org/isos/x86_64/9.1.html). If you would like support for another linux distro, open an issue and I will be more than happy to create an install script for said distro. 
 
 It is required that you have sudo permissions and have `git` installed. If you don't have git, you can install it with the following command
 `sudo dnf install git -y`
@@ -62,11 +62,17 @@ Once the installation is complete, you can utilize the provided PCAP to create l
 ## PCAP
 There are multiple PCAP files available in the `pcap` folder. They are all zipped up, and are password protected with the password `infected`. To unzip them simply run `unzip <pcap>.pcap` I pulled all of these from the [Malware Traffic Analysis](https://www.malware-traffic-analysis.net/training-exercises.html) website. They provide exercises with PCAP and associated answer keys/ quizzes. With this setup, you will be able to pull down any PCAP you want and run it through.
 
-If you want some larger PCAP to run thorough, I have a .zip file with 17G of PCAP [here]() which is stored in a 5GB zip file. You will have to download it and unzip it with `tar xzvf BigPcap.tar.gz`. The pcap is broken up into 16 smaller PCAP files. When you unzip the folder there is a bash script that you can run and it will read all of the PCAP files through zeek and suricata. Because the PCAP is big, it the script will take awhile. The data is from 2012, so your logs will be in 2012.
+If you want some larger PCAP to run thorough, I have a .zip file with 17G of PCAP [here](https://drive.google.com/file/d/1d6QXF0uk1ZiJKfaqwy4SjfvuyVUGrCte/view?usp=share_link) which is stored in a 5GB zip file. You can download it and unzip it with:
+``` 
+wget --no-check-certificate "https://drive.google.com/uc?export=download&id=1d6QXF0uk1ZiJKfaqwy4SjfvuyVUGrCte" -O BigPcap.tar.gz
+
+tar xzvf BigPcap.tar.gz
+``` 
+The pcap is broken up into 16 smaller PCAP files. When you unzip the folder there is a bash script that you can run and it will read all of the PCAP files through zeek and suricata. Because the PCAP is big, the script will take awhile. The data is from 2012, so your logs will be March 2012.
 
 The logs for the pcap you run will be dated for when the PCAP happened, not for when you read it in. For example: if you read in PCAP from 2017, the logs will be in 2017, even though it is 2023.
 
-<u>**IMPORTANT:**</u> Before running pcap through zeek or suricata, you have to make sure you're in the correct directory so that filebeat can pull the logs.
+<u>**IMPORTANT:**</u> Before running pcap through zeek or suricata, you have to make sure you're in the correct directory so that filebeat can pull the logs as zeek and suricata store the logs in the current working directory when you use the `-r` option.
 
 ```
 cd /opt/zeek/logs/
@@ -125,4 +131,8 @@ The best way to perform troubleshooting is to run `journalctl -xeu <service> | l
 journalctl -xeu kibana.service | less
 ```
 You can use `SHIFT + G` to jump to the most recent logs.
+
+1d6QXF0uk1ZiJKfaqwy4SjfvuyVUGrCte
+
+
 
