@@ -2,7 +2,7 @@
 
 echo " "
 echo " "
-echo -e "This script \033[4mMUST\033[0m be run as root"
+echo -e "This script \033[4mMUST\033[0m be run with sudo permissions"
 echo " "
 echo "This script may take a few hours to run."
 echo " "
