@@ -132,7 +132,7 @@ journalctl -xeu kibana.service | less
 ```
 You can use `SHIFT + G` to jump to the most recent logs.
 
-1d6QXF0uk1ZiJKfaqwy4SjfvuyVUGrCte
+
 
 
 
