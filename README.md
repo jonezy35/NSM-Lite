@@ -98,7 +98,7 @@ Uncomment lines 4 and 5 in the `/etc/zeek/node.cfg` file and replace `eth0` with
 
 Uncomment lines 520-527 in `/etc/suricata/suricata.yaml` and replace `eth0` with your capture interface.
 
-Add `-i <your captrue interface>` to line 7 of `/etc/systemd/system/suricata.service` 
+Add `-i <your capture interface>` to line 7 of `/etc/systemd/system/suricata.service` 
 
 You can now start zeek and suricata.
 
