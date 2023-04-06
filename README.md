@@ -7,6 +7,7 @@
 3. [Usage](#usage)
     - [Requirements](#requirements)
     - [Installation](#installation)
+    - [PCAP](#pcap)
     - [Configuration](#configuration)
 4. [Options](#options)
 5. [Troubleshooting](#troubleshooting)
@@ -56,8 +57,14 @@ Once installed, you can access kibana at http://\<your IP\>:5601
 The default login credentials are `elastic` and `password`
 
 Once the installation is complete, you can utilize the provided PCAP to create logs for analysis.
+ 
 
+## PCAP
 There are multiple PCAP files available in the `pcap` folder. They are all zipped up, and are password protected with the password `infected`. To unzip them simply run `unzip <pcap>.pcap` I pulled all of these from the [Malware Traffic Analysis](https://www.malware-traffic-analysis.net/training-exercises.html) website. They provide exercises with PCAP and associated answer keys/ quizzes. With this setup, you will be able to pull down any PCAP you want and run it through.
+
+If you want some larger PCAP to run thorough, I have a .zip file with 17G of PCAP [here]() which is stored in a 5GB zip file. You will have to download it and unzip it with `tar xzvf BigPcap.tar.gz`. The pcap is broken up into 16 smaller PCAP files. When you unzip the folder there is a bash script that you can run and it will read all of the PCAP files through zeek and suricata. Because the PCAP is big, it the script will take awhile. The data is from 2012, so your logs will be in 2012.
+
+The logs for the pcap you run will be dated for when the PCAP happened, not for when you read it in. For example: if you read in PCAP from 2017, the logs will be in 2017, even though it is 2023.
 
 <u>**IMPORTANT:**</u> Before running pcap through zeek or suricata, you have to make sure you're in the correct directory so that filebeat can pull the logs.
 
