@@ -17,7 +17,7 @@ This repository contains an automated installation script for a Network Security
 
 Out of the box I've included a few PCAP files which can be used to provide some test logs to work through. If you have a promiscuous interface setup and would prefer to capture from that, I'll provide instructions for that as well.
 
-This could also be used as a good starting point to teach yourself how to setup an NSM kit. By having a known good NSM kit, you can be free to play around, break things, fix them (or scrap it and reinstall), etc. 
+This could also be used as a good starting point to teach yourself how to setup an NSM kit. By having a known good setup, you can be free to play around, break things, fix them (or scrap it and reinstall), etc. 
 
 ## Description
 
