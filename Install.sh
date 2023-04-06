@@ -152,7 +152,7 @@ tar xzvf suricata-6.0.10.tar.gz
 cd suricata-6.0.10
 
 ##Install Suricata
-./configure --prefix=/opt/suricata --enable-lua --enable-geoip --localstatedir=/var/log/suricata  --sysconfdir=/etc --disable-gccmarch-native --enable-profiling --enable-http2-decompression --enable-python --enable-af-packet
+./configure --prefix=/opt/suricata --enable-lua --enable-geoip --localstatedir=/var/  --sysconfdir=/etc --disable-gccmarch-native --enable-profiling --enable-http2-decompression --enable-python --enable-af-packet
 make -j$(nproc)
 make install-full
 cd ..
