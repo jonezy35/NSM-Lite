@@ -7,7 +7,10 @@
 3. [Usage](#usage)
     - [Requirements](#requirements)
     - [Installation](#installation)
-    - 
+    - [Configuration](#configuration)
+4. [Options](#options)
+5. [Troubleshooting](#troubleshooting)
+6. [License](#license)
 
 ## Purpose
 
@@ -87,7 +90,28 @@ curl --insecure -X POST "https://localhost:9200/your_index_name/_delete_by_query
 '
 ```
 ## Options
+If you want to capture on a promiscuous interface instead of reading PCAP:
+
+Uncomment lines 4 and 5 in the `/etc/zeek/node.cfg` file and replace `eth0` with your promiscuous interface.
+
+Uncomment lines 520-527 in `/etc/suricata/suricata.yaml` and replace `eth0` with your capture interface.
+
+Add `-i <your captrue interface>` to line 7 of `/etc/systemd/system/suricata.service` 
+
+You can now start zeek and suricata.
+
+```
+systemctl start suricata
+
+/./opt/zeek/bin/zeek deploy
+```
 
 ## Troubleshooting
 
-## License
+The best way to perform troubleshooting is to run `journalctl -xeu <service> | less` where \<service\> is the service you're troubleshooting.  For example:
+
+```
+journalctl -xeu kibana.service | less
+```
+You can use `SHIFT + G` to jump to the most recent logs.
+
