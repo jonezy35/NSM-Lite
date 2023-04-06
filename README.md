@@ -103,6 +103,8 @@ Add `-i <your captrue interface>` to line 7 of `/etc/systemd/system/suricata.ser
 You can now start zeek and suricata.
 
 ```
+sudo systemctl daemon-reload
+
 systemctl start suricata
 
 /./opt/zeek/bin/zeek deploy
