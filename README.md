@@ -10,7 +10,6 @@
     - [Configuration](#configuration)
 4. [Options](#options)
 5. [Troubleshooting](#troubleshooting)
-6. [License](#license)
 
 ## Purpose
 
