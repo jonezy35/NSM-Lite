@@ -54,8 +54,6 @@ sudo ./Install.sh
 Once installed, you can access kibana at http://\<your IP\>:5601
 
 The default login credentials are `elastic` and `password`
-### Configuration
-If you wish to change the default password, you can do so with the `elasticsearch-reset-password` utility. Simply run `sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i` <u>**NOTE**</u>: If you update the default elastic password, you will also have to update it in the filebeat.yml at `/etc/filebeat/filebeat.yml`
 
 Once the installation is complete, you can utilize the provided PCAP to create logs for analysis.
 
@@ -88,6 +86,11 @@ curl --insecure -X POST "https://localhost:9200/your_index_name/_delete_by_query
 }
 '
 ```
+
+### Configuration
+If you wish to change the default password, you can do so with the `elasticsearch-reset-password` utility. Simply run `sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i` <u>**NOTE**</u>: If you update the default elastic password, you will also have to update it in the filebeat.yml at `/etc/filebeat/filebeat.yml`
+
+
 ## Options
 If you want to capture on a promiscuous interface instead of reading PCAP:
 
