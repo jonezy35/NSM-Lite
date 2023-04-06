@@ -243,9 +243,9 @@ outputs:
         #- dnp3
 
   # alert output for use with Barnyard2
-  - unified2-alert:
-      enabled: yes
-      filename: unified2.alert
+  #- unified2-alert:
+  #    enabled: yes
+  #    filename: unified2.alert
 
       # File size limit.  Can be specified in kb, mb, gb.  Just a number
       # is parsed as bytes.
@@ -263,21 +263,21 @@ outputs:
       # direction) with the one reported in the X-Forwarded-For HTTP header.
       # This is helpful when reviewing alerts for traffic that is being reverse
       # or forward proxied.
-      xff:
-        enabled: no
+      #xff:
+      #  enabled: no
         # Two operation modes are available, "extra-data" and "overwrite". Note
         # that in the "overwrite" mode, if the reported IP address in the HTTP
         # X-Forwarded-For header is of a different version of the packet
         # received, it will fall-back to "extra-data" mode.
-        mode: extra-data
+      #  mode: extra-data
         # Two proxy deployments are supported, "reverse" and "forward". In
         # a "reverse" deployment the IP address used is the last one, in a
         # "forward" deployment the first IP address is used.
-        deployment: reverse
+      #  deployment: reverse
         # Header name where the actual IP address will be reported, if more
         # than one IP address is present, the last IP address will be the
         # one taken into consideration.
-        header: X-Forwarded-For
+      #  header: X-Forwarded-For
 
   # a line based log of HTTP requests (no alerts)
   - http-log:
@@ -303,10 +303,10 @@ outputs:
       #certs-log-dir: certs # directory to store the certificates files
 
   # a line based log of DNS requests and/or replies (no alerts)
-  - dns-log:
-      enabled: yes
-      filename: dns.log
-      append: yes
+  #- dns-log:
+  #    enabled: yes
+  #    filename: dns.log
+  #    append: yes
       #filetype: regular # 'regular', 'unix_stream' or 'unix_dgram'
 
   # Packet log... log packets in pcap format. 3 modes of operation: "normal"
@@ -577,6 +577,30 @@ pcap-file:
 # "detection-only" enables protocol detection only (parser disabled).
 app-layer:
   protocols:
+    nfs:
+      enabled: yes
+    ntp:
+      enabled: yes
+    tftp:
+      enabled: yes
+    ikev2:
+      enabled: yes
+    krb5:
+      enabled: yes
+    dhcp:
+      enabled: yes
+    snmp:
+      enabled: yes
+    sip:
+      enabled: yes
+    rfb:
+      enabled: yes
+    mqtt:
+      enabled: yes
+    rdp:
+      enabled: yes
+    http2:
+      enabled: yes
     tls:
       enabled: yes
       detection-ports:
