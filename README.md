@@ -96,7 +96,7 @@ sudo rm /opt/zeek/logs/*.log
 ```
 curl --insecure -XGET "https://localhost:9200/_cat/indices?v&pretty" -u elastic:password
 ```
-Now take the index name that is returned and run:
+Now take the index name that is returned and run the following (this may take awhile depending on how many documenst you have in your index):
 
 ```
 curl --insecure -X POST "https://localhost:9200/your_index_name/_delete_by_query?conflicts=proceed&pretty" -H 'Content-Type: application/json' -u elastic:password -d'
