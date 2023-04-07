@@ -115,12 +115,15 @@ sudo systemctl start kibana.service
 ####################### Zeek #######################
 
 ##Pull down zeek
-git clone --recurse-submodules https://github.com/zeek/zeek/
+#wget https://github.com/zeek/zeek/archive/refs/tags/v5.2.0.tar.gz
+#wget https://github.com/zeek/zeek/archive/refs/tags/v5.2.0.zip
+#tar xzvf v5.2.0.tar.gz
+#cd zeek-5.2.0
+git clone --recurse-submodules -b release/5.0 https://github.com/zeek/zeek.git
 cd zeek
-git checkout release/5.2
 
 ##Install Zeek
-./configure --prefix=/opt/zeek --localstatedir=/var/log/zeek --conf-files-dir=/etc/zeek --disable-spicy
+./configure --prefix=/opt/zeek --localstatedir=/var/log/zeek --conf-files-dir=/etc/zeek
 make -j$(nproc)
 make install
 cd ..
