@@ -47,7 +47,7 @@ vars:
 ## Step 2: select the rules to enable or disable
 ##
 
-default-rule-path: /etc/suricata/rules/
+default-rule-path: /var/lib/suricata/rules/
 rule-files:
  - suricata.rules
 # - test.rules
