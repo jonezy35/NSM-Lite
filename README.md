@@ -85,7 +85,13 @@ sudo /./opt/zeek/bin/zeek -r </path/to/pcap>
 cd /var/log/suricata/
 sudo /./opt/suricata/bin/suricata -r </path/to/pcap>
 ```
-If you have already run pcap and you wish to clear the index before running new pcap through, simply run:
+If you have already run pcap and you wish to clear the data before running new pcap, simply clear the logs on the filesystem and then delete the documents from the index: 
+
+```
+sudo rm /var/log/suricata/eve.json
+
+sudo rm /opt/zeek/logs/*.log
+```
 
 ```
 curl --insecure -XGET "https://localhost:9200/_cat/indices?v&pretty" -u elastic:password
