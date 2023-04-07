@@ -114,11 +114,13 @@ sudo systemctl start kibana.service
 
 ####################### Zeek #######################
 
-##Pull down zeek
+##Alternative way to pull down zeek (not currently working)
 #wget https://github.com/zeek/zeek/archive/refs/tags/v5.2.0.tar.gz
 #wget https://github.com/zeek/zeek/archive/refs/tags/v5.2.0.zip
 #tar xzvf v5.2.0.tar.gz
 #cd zeek-5.2.0
+
+##Pull down zeek
 git clone --recurse-submodules -b release/5.0 https://github.com/zeek/zeek.git
 cd zeek
 
