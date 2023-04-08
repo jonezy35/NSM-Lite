@@ -125,7 +125,7 @@ git clone --recurse-submodules -b release/5.0 https://github.com/zeek/zeek.git
 cd zeek
 
 ##Install Zeek
-./configure --prefix=/opt/zeek --localstatedir=/var/log/zeek --conf-files-dir=/etc/zeek
+./configure --prefix=/opt/zeek --localstatedir=/var/log/zeek --conf-files-dir=/etc/zeek --disable-spicy
 make -j$(nproc)
 make install
 cd ..

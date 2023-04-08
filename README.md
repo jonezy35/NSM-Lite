@@ -1,6 +1,9 @@
 # NSM Kit Automated Installation
 #### (Elasticsearch, Kibana, Filebeat, Zeek, and Suricata)
 
+## NOTE: 
+Currently the zeek portion of this is not working correctly. The install is successful but the data pipeline for zeek is not working properly. I am currently working on it and will update when I am able to solve the problem.
+
 ## Table of Contents
 1. [Purpose](#purpose)
 2. [Description](#description)
