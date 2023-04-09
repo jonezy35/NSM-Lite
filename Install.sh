@@ -121,7 +121,7 @@ sudo systemctl start kibana.service
 #cd zeek-5.2.0
 
 ##Pull down zeek
-git clone --recurse-submodules -b release/5.0 https://github.com/zeek/zeek.git
+git clone --recurse-submodules -b release/4.0 https://github.com/zeek/zeek.git
 cd zeek
 
 ##Install Zeek
