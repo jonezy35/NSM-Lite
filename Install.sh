@@ -134,6 +134,8 @@ cd ..
 sudo mv /etc/zeek/node.cfg /etc/zeek/node.cfg.old
 sudo cp node.cfg /etc/zeek/node.cfg 
 
+#Set Zeek to output logs in JSON format for elasticsearch
+echo "@load /opt/zeek/share/zeek/policy/tuning/json-logs.zeek" >> /opt/zeek/share/zeek/site/local.zeek
 
 echo "The default node.cfg file has been created at /etc/zeek/node.cfg"
 
@@ -244,4 +246,4 @@ echo " "
 #### https://www.malware-traffic-analysis.net/training-exercises.html
 
 
-### echo "@load tuning/json-logs" >> /opt/zeek/share/zeek/site/local.zeek
+### echo "@load /opt/zeek/share/zeek/policy/tuning/json-logs.zeek" >> /opt/zeek/share/zeek/site/local.zeek
