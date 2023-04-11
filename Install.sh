@@ -242,3 +242,6 @@ echo " "
 
 ############### URL for more PCAP to analyze ####################
 #### https://www.malware-traffic-analysis.net/training-exercises.html
+
+
+### echo "@load tuning/json-logs" >> /opt/zeek/share/zeek/site/local.zeek
