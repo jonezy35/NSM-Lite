@@ -136,6 +136,7 @@ sudo cp node.cfg /etc/zeek/node.cfg
 
 #Set Zeek to output logs in JSON format for elasticsearch
 echo "@load /opt/zeek/share/zeek/policy/tuning/json-logs.zeek" >> /opt/zeek/share/zeek/site/local.zeek
+sudo sed -i 's|SitePolicyScripts = local.zeek|SitePolicyScripts = local.zeek, json-logs.zeek|' /etc/zeek/zeekctl.cfg
 
 echo "The default node.cfg file has been created at /etc/zeek/node.cfg"
 
