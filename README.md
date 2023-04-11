@@ -1,9 +1,6 @@
 # NSM Kit Automated Installation
 #### (Elasticsearch, Kibana, Filebeat, Zeek, and Suricata)
 
-## NOTE: 
-Currently the zeek portion of this is not working correctly. The install is successful but the data pipeline for zeek is not working properly. I am currently working on it and will update when I am able to solve the problem.
-
 ## Table of Contents
 1. [Purpose](#purpose)
 2. [Description](#description)
@@ -81,7 +78,7 @@ The logs for the pcap you run will be dated for when the PCAP happened, not for 
 
 ```
 cd /opt/zeek/logs/
-sudo /./opt/zeek/bin/zeek -r </path/to/pcap>
+sudo /./opt/zeek/bin/zeek -r </path/to/pcap> /opt/zeek/share/zeek/policy/tuning/json-logs.zeek
 ```
 
 ```
