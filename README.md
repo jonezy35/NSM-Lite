@@ -78,7 +78,7 @@ sudo ./read-pcap.sh
 
 The logs for the pcap you run will be dated for when the PCAP happened, not for when you read it in. For example: if you read in PCAP from 2017, the logs will be in 2017, even though it is 2023.
 
-<u>**IMPORTANT:**</u> Before running pcap through zeek or suricata, you have to make sure you're in the correct directory so that filebeat can pull the logs as zeek and suricata store the logs in the current working directory when you use the `-r` option.
+<u>**IMPORTANT:**</u> Before running pcap through zeek or suricata, you have to make sure you're in the correct directory so that filebeat can pull the logs as zeek and suricata store the logs in the current working directory when you use the `-r` option. You also have to give zeek the `json-logs.zeek` path so that zeek writes the logs as json for filebeat to send to elasticsearch (by default zeek stores its logs as tab delimited)
 
 ```
 cd /opt/zeek/logs/
