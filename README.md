@@ -72,6 +72,7 @@ tar xzvf BigPcap.tar.gz
 ``` 
 The pcap is broken up into 15 smaller PCAP files. When you unzip the folder there is a bash script that you can run and it will read all of the PCAP files through zeek and suricata. Because the PCAP is big, the script will take awhile. The data is from 2012, so your logs will be in that time frame.
 
+From the BigPcap directory, run:
 ```
 sudo ./read-pcap.sh
 ```
