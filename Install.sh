@@ -247,3 +247,5 @@ echo " "
 
 
 ### echo "@load /opt/zeek/share/zeek/policy/tuning/json-logs.zeek" >> /opt/zeek/share/zeek/site/local.zeek
+
+### sudo sed -i 's|SitePolicyScripts = local.zeek|SitePolicyScripts = local.zeek, json-logs.zeek|' /etc/zeek/zeekctl.cfg
