@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Iterate through pcap files in the current directory
-
+for pcap_file in ./*.pcap; do
     # Run Zeek on the pcap file
     echo "Running Zeek on $pcap_file..."
     sudo /./opt/zeek/bin/zeek -r "$pcap_file" /opt/zeek/share/zeek/policy/tuning/json-logs.zeek
