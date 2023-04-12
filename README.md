@@ -95,9 +95,9 @@ sudo /./opt/suricata/bin/suricata -r </path/to/pcap>
 If you have already run pcap and you wish to clear the data before running new pcap, simply clear the logs on the filesystem and then delete the documents from the index: 
 
 ```
-sudo rm /var/log/suricata/eve.json
+sudo rm -f /var/log/suricata/eve.json
 
-sudo rm /opt/zeek/logs/*.log
+sudo rm -f /opt/zeek/logs/*.log
 ```
 
 ```
