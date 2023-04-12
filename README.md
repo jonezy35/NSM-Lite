@@ -37,7 +37,9 @@ The NSM kit is designed to provide a comprehensive network monitoring solution b
 
 ### Requirements
 
-This script has been built and tested with Alma Linux 9.1 [Download Alma Linux 9.1 ISO](https://mirrors.almalinux.org/isos/x86_64/9.1.html). If you would like support for another linux distro, open an issue and I will be more than happy to create an install script for said distro. 
+This script has been built and tested with Alma Linux 9.1 [Download Alma Linux 9.1 ISO](https://mirrors.almalinux.org/isos/x86_64/9.1.html). If you would like support for another linux distro, open an issue and I will be more than happy to create an install script for said distro.
+
+I have tested this down to 2 CPU's and 2Gb RAM. More is recommended but it will install successfully on that.
 
 It is required that you have sudo permissions and have `git` installed. If you don't have git, you can install it with the following command
 `sudo dnf install git -y`
