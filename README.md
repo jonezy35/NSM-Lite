@@ -64,7 +64,7 @@ Once the installation is complete, you can utilize the provided PCAP to create l
 ## PCAP
 There are a few PCAP files available in the `pcap` folder. They are all zipped up, and are password protected with the password `infected`. To unzip them simply run `unzip <pcap>.pcap` I pulled all of these from the [Malware Traffic Analysis](https://www.malware-traffic-analysis.net/training-exercises.html) website. They provide exercises with PCAP and associated answer keys/ quizzes. With this setup, you will be able to pull down any PCAP you want and run it through.
 
-If you want some larger PCAP to run through, I have a .zip file with 17G of PCAP [here](https://drive.google.com/file/d/1d6QXF0uk1ZiJKfaqwy4SjfvuyVUGrCte/view?usp=share_link) which is stored in a ~ 4GB zip file. You can download it with gdown and unzip it with tar:
+If you want some larger PCAP to run through, I have a .zip file with 17G of PCAP [here](https://drive.google.com/file/d/1B46N6Uqtvz9w-lzwzOV344-ArFPXyAfQ/view?usp=share_link) which is stored in a ~ 4GB zip file. You can download it with gdown and unzip it with tar:
 ``` 
 pip install gdown
 
