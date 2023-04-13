@@ -83,6 +83,8 @@ The logs for the pcap you run will be dated for when the PCAP happened, not for 
 
 <u>**IMPORTANT:**</u> Before running pcap through zeek or suricata, you have to make sure you're in the correct directory so that filebeat can pull the logs as zeek and suricata store the logs in the current working directory when you use the `-r` option. You also have to give zeek the `json-logs.zeek` path so that zeek writes the logs as json for filebeat to send to elasticsearch (by default zeek stores its logs as tab delimited)
 
+To generate logs for any pcap file you have on your system:
+
 ```
 cd /opt/zeek/logs/
 sudo /./opt/zeek/bin/zeek -r </path/to/pcap> /opt/zeek/share/zeek/policy/tuning/json-logs.zeek
