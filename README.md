@@ -137,7 +137,7 @@ sudo systemctl daemon-reload
 
 systemctl start suricata
 
-/./opt/zeek/bin/zeek deploy
+/./opt/zeek/bin/zeekctl deploy
 ```
 
 ## Troubleshooting
