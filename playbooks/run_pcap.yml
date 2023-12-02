@@ -1,0 +1,39 @@
+---
+- name: Process PCAP through Zeek and Suricata
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Copy pcap zip file to remote host
+      ansible.builtin.copy:
+        src: ../pcap/2022-02-23-traffic-analysis-exercise.pcap.zip
+        dest: /tmp/
+
+    - name: Unzip password-protected pcap file on remote host
+      ansible.builtin.command:
+        cmd: "unzip -o -P infected /tmp/2022-02-23-traffic-analysis-exercise.pcap.zip -d /tmp/"
+      args:
+        creates: "/tmp/2022-02-23-traffic-analysis-exercise.pcap"
+
+
+    - name: Process PCAP with Zeek
+      ansible.builtin.command:
+        cmd: "/opt/zeek/bin/zeek -r /tmp/2022-02-23-traffic-analysis-exercise.pcap /opt/zeek/share/zeek/policy/tuning/json-logs.zeek"
+        chdir: /opt/zeek/logs/
+      register: zeek_result
+      ignore_errors: yes
+
+    - name: Display Zeek processing result
+      ansible.builtin.debug:
+        msg: "{{ zeek_result.stdout_lines }}"
+
+    - name: Process PCAP with Suricata
+      ansible.builtin.command:
+        cmd: "/opt/suricata/bin/suricata -r /tmp/2022-02-23-traffic-analysis-exercise.pcap"
+        chdir: /var/log/suricata/
+      register: suricata_result
+      ignore_errors: yes
+
+    - name: Display Suricata processing result
+      ansible.builtin.debug:
+        msg: "{{ suricata_result.stdout_lines }}"

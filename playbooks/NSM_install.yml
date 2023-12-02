@@ -165,4 +165,265 @@
         name: elasticsearch.service
         state: restarted
 
+- name: Install and Configure Kibana
+  hosts: all
+  become: yes
+  vars:
+    elastic_version: "8.7.0"
+    kibana_config_file: "../kibana.yml"  # Specify the path to your kibana.yml file
 
+  tasks:
+    - name: Download Kibana RPM
+      ansible.builtin.get_url:
+        url: "https://artifacts.elastic.co/downloads/kibana/kibana-{{ elastic_version }}-x86_64.rpm"
+        dest: "/tmp/kibana-{{ elastic_version }}-x86_64.rpm"
+
+    - name: Install Kibana
+      ansible.builtin.package:
+        name: "/tmp/kibana-{{ elastic_version }}-x86_64.rpm"
+        state: present
+
+    - name: Copy Kibana configuration
+      ansible.builtin.copy:
+        src: "{{ kibana_config_file }}"
+        dest: /etc/kibana/kibana.yml
+        backup: yes
+      notify: 
+        - reload kibana
+
+    - name: Get host IP address
+      ansible.builtin.shell:
+        cmd: "hostname -I | awk '{print $1}'"
+      register: host_ip
+
+    - name: Set server.host in Kibana configuration
+      ansible.builtin.lineinfile:
+        path: /etc/kibana/kibana.yml
+        regexp: '^server\.host:'
+        line: "server.host: \"{{ host_ip.stdout }}\""
+        backrefs: yes
+      notify: 
+        - reload kibana
+
+    - name: Enable and start Kibana service
+      ansible.builtin.systemd:
+        name: kibana.service
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: reload kibana
+      ansible.builtin.systemd:
+        name: kibana.service
+        state: restarted
+
+- name: Install and Configure Zeek
+  hosts: all
+  become: yes
+  vars:
+    zeek_version: "v5.2.0"  # Set the Zeek version
+
+  tasks:
+    - name: Clone Zeek repository
+      ansible.builtin.git:
+        repo: "https://github.com/zeek/zeek.git"
+        dest: "/opt/zeek"
+        version: "{{ zeek_version }}"
+        clone: yes
+        update: yes
+        recursive: yes
+
+    - name: Install Zeek
+      ansible.builtin.shell:
+        cmd: "./configure --prefix=/opt/zeek --localstatedir=/var/log/zeek --conf-files-dir=/etc/zeek --disable-spicy && make -j$(nproc) && make install"
+        chdir: /opt/zeek
+        creates: /opt/zeek/bin/zeek
+
+    - name: Move existing Zeek node.cfg if present
+      ansible.builtin.command:
+        cmd: mv /etc/zeek/node.cfg /etc/zeek/node.cfg.old
+        removes: /etc/zeek/node.cfg.old
+        creates: /etc/zeek/node.cfg
+      ignore_errors: yes
+
+    - name: Copy new node.cfg to /etc/zeek
+      ansible.builtin.copy:
+        src: ../node.cfg  # Update this with the path to your node.cfg
+        dest: /etc/zeek/node.cfg
+        backup: yes
+
+    - name: Configure Zeek to output logs in JSON format
+      ansible.builtin.lineinfile:
+        path: /opt/zeek/share/zeek/site/local.zeek
+        line: "@load /opt/zeek/share/zeek/policy/tuning/json-logs.zeek"
+        create: yes
+
+    - name: Update Zeek binary path in /etc/profile
+      ansible.builtin.lineinfile:
+        path: /etc/profile
+        line: 'export PATH="/opt/zeek/bin:$PATH"'
+        create: yes
+
+    - name: Reload shell environment
+      ansible.builtin.shell:
+        cmd: "source /etc/profile"
+
+- name: Install and Configure Suricata
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Download Suricata
+      ansible.builtin.get_url:
+        url: "https://www.openinfosecfoundation.org/download/suricata-6.0.10.tar.gz"
+        dest: "/tmp/suricata-6.0.10.tar.gz"
+
+    - name: Extract Suricata tarball
+      ansible.builtin.unarchive:
+        src: "/tmp/suricata-6.0.10.tar.gz"
+        dest: "/opt"
+        remote_src: yes
+
+    - name: Install Suricata
+      ansible.builtin.shell:
+        cmd: |
+          cd /opt/suricata-6.0.10
+          ./configure --prefix=/opt/suricata --enable-lua --enable-geoip --localstatedir=/var/ --sysconfdir=/etc --disable-gccmarch-native --enable-profiling --enable-http2-decompression --enable-python --enable-af-packet
+          make -j$(nproc)
+          make install-full
+        creates: /opt/suricata/bin/suricata
+
+    - name: Copy suricata.yaml configuration
+      ansible.builtin.copy:
+        src: ../suricata.yaml
+        dest: /etc/suricata/suricata.yaml
+        backup: yes
+
+    - name: Create Suricata systemd service file
+      ansible.builtin.copy:
+        src: ../suricata.service
+        dest: /etc/systemd/system/suricata.service
+        backup: yes
+      notify: 
+        - reload suricata service
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable Suricata service
+      ansible.builtin.systemd:
+        name: suricata
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: reload suricata service
+      ansible.builtin.systemd:
+        name: suricata
+        state: restarted
+
+- name: Install and Configure Filebeat
+  hosts: all
+  become: yes
+  vars:
+    elastic_version: "8.7.0"
+
+  tasks:
+    - name: Download Filebeat RPM
+      ansible.builtin.get_url:
+        url: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ elastic_version }}-x86_64.rpm"
+        dest: "/tmp/filebeat-{{ elastic_version }}-x86_64.rpm"
+
+    - name: Install Filebeat
+      ansible.builtin.package:
+        name: "/tmp/filebeat-{{ elastic_version }}-x86_64.rpm"
+        state: present
+
+    - name: Copy filebeat.yml configuration
+      ansible.builtin.copy:
+        src: ../filebeat.yml
+        dest: /etc/filebeat/filebeat.yml
+        backup: yes
+
+    - name: Get the host IP
+      ansible.builtin.shell:
+        cmd: "hostname -I | awk '{print $1}'"
+      register: host_ip
+
+    - name: Set setup.kibana.host in Filebeat config
+      ansible.builtin.lineinfile:
+        path: /etc/filebeat/filebeat.yml
+        regexp: '^setup\.kibana\.host:'
+        line: "setup.kibana.host: \"{{ host_ip.stdout }}:5601\""
+
+    - name: Rename existing zeek.yml.disabled to zeek.yml.disabled.old
+      ansible.builtin.command:
+        cmd: "mv /etc/filebeat/modules.d/zeek.yml.disabled /etc/filebeat/modules.d/zeek.yml.disabled.old"
+      args:
+        removes: "/etc/filebeat/modules.d/zeek.yml.disabled.old"
+
+    - name: Copy new zeek.yml.disabled to Filebeat modules directory
+      ansible.builtin.copy:
+        src: "../zeek.yml.disabled"
+        dest: "/etc/filebeat/modules.d/zeek.yml.disabled"
+
+    - name: Rename existing suricata.yml.disabled to suricata.yml.disabled.old
+      ansible.builtin.command:
+        cmd: "mv /etc/filebeat/modules.d/suricata.yml.disabled /etc/filebeat/modules.d/suricata.yml.disabled.old"
+      args:
+        removes: "/etc/filebeat/modules.d/suricata.yml.disabled.old"
+
+    - name: Copy new suricata.yml.disabled to Filebeat modules directory
+      ansible.builtin.copy:
+        src: "../suricata.yml.disabled"
+        dest: "/etc/filebeat/modules.d/suricata.yml.disabled"
+
+    - name: Enable Filebeat modules for Suricata and Zeek
+      ansible.builtin.command:
+        cmd: "filebeat modules enable suricata zeek"
+
+    - name: Set up Filebeat
+      ansible.builtin.command:
+        cmd: "filebeat setup -e"
+
+    - name: Enable and start Filebeat service
+      ansible.builtin.systemd:
+        name: filebeat.service
+        enabled: yes
+        state: started
+
+- name: Finalize NSM Configuration
+  hosts: all
+  become: yes
+  tasks:
+    - name: Add firewall rules for Kibana and Elasticsearch
+      ansible.builtin.firewalld:
+        port: "{{ item }}"
+        permanent: yes
+        state: enabled
+      loop:
+        - "5601/tcp"
+        - "9200/tcp"
+
+    - name: Reload firewall
+      ansible.builtin.command:
+        cmd: "firewall-cmd --reload"
+
+    - name: Enable Filebeat modules for Suricata and Zeek
+      ansible.builtin.command:
+        cmd: "filebeat modules enable suricata zeek"
+
+    - name: Run Filebeat setup
+      ansible.builtin.command:
+        cmd: "filebeat setup -e"
+
+    - name: Start Filebeat service
+      ansible.builtin.systemd:
+        name: filebeat.service
+        state: started
+        enabled: yes
+
+    - name: Display installation completion message
+      ansible.builtin.debug:
+        msg: "The sensor is now installed and configured."
