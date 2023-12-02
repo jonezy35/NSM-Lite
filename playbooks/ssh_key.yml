@@ -1,0 +1,50 @@
+---
+- name: Set up SSH Key-Based Authentication and Update SSH Config
+  hosts: remote_host
+  gather_facts: yes
+  vars_prompt:
+    - name: ssh_password
+      prompt: "Enter SSH password for remote host"
+      private: yes
+
+  tasks:
+    - name: Generate an SSH key with the title "NSM" on the control node
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/NSM"
+        comment: "NSM"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Install sshpass for Debian-based systems
+      apt:
+        name: sshpass
+        state: present
+      when: ansible_os_family == "Debian"
+      become: yes
+
+    - name: Install sshpass for Red Hat-based systems
+      yum:
+        name: sshpass
+        state: present
+      when: ansible_os_family == "RedHat"
+      become: yes
+
+    - name: Copy the generated SSH key to the remote host
+      authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: "{{ lookup('file', '~/.ssh/NSM.pub') }}"
+      vars:
+        ansible_ssh_pass: "{{ ssh_password }}"
+        ansible_become_pass: "{{ ssh_password }}"
+
+    - name: Update SSH config file on the control node
+      blockinfile:
+        path: "~/.ssh/config"
+        block: |
+          Host {{ inventory_hostname }}
+            HostName {{ ansible_host }}
+            User {{ ansible_user }}
+            IdentityFile ~/.ssh/NSM
+      delegate_to: localhost
+      run_once: true
