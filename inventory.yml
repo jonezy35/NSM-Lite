@@ -2,10 +2,11 @@ all:
   children:
     server:
       hosts:
-        NSM:
-          ansible_host: 10.10.10.10
-          ansible_user: jonezy
-          ansible_ssh_private_key_file: ~/.ssh/id_ed25519_AlmaDev.pub
-    ### Uncomment below and delete the NSM host if you are installing locally ###
+    ### Uncomment NSM if you are using a remote machine and fill in all the variables ###
+        # NSM:
+        #   ansible_host: 10.10.10.10
+        #   ansible_user: jonezy
+        #   ansible_ssh_private_key_file: ~/.ssh/id_ed25519_AlmaDev.pub
+    ### Uncomment localhost if you are installing locally ###
         # localhost:
         #   ansible_connection: local

@@ -98,6 +98,15 @@
   become: yes
   vars:
     elastic_version: "8.7.0"
+  vars_prompt:
+    - name: elastic_password
+      prompt: "Enter the password for the 'elastic' user"
+      private: yes
+      confirm: yes
+    - name: kibana_system_password
+      prompt: "Enter the password for the 'kibana_system' user"
+      private: yes
+      confirm: yes
 
   tasks:
     - name: Import Elasticsearch GPG key
@@ -141,8 +150,8 @@
         command: "sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i"
         responses:
           (?i)Please confirm that you would like to continue \[y/N\]: "y"
-          (?i)Enter password for \[elastic\]: "password"
-          (?i)Re-enter password for \[elastic\]: "password"
+          (?i)Enter password for \[elastic\]: "{{ elastic_password }}"
+          (?i)Re-enter password for \[elastic\]: "{{ elastic_password }}"
         timeout: 60
       become: yes
       ignore_errors: yes
@@ -152,8 +161,8 @@
         command: "sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u kibana_system -i"
         responses:
           (?i)Please confirm that you would like to continue \[y/N\]: "y"
-          (?i)Enter password for \[kibana_system\]: "password"
-          (?i)Re-enter password for \[kibana_system\]: "password"
+          (?i)Enter password for \[kibana_system\]: "{{ kibana_system_password }}"
+          (?i)Re-enter password for \[kibana_system\]: "{{ kibana_system_password }}"
         timeout: 60
       become: yes
       ignore_errors: yes
