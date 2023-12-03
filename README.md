@@ -2,6 +2,7 @@
 #### (Elasticsearch, Kibana, Filebeat, Zeek, and Suricata)
 
 ## Table of Contents
+1. [Ansible Updates!](#ansible-updates)
 1. [Purpose](#purpose)
 2. [Description](#description)
 3. [Usage](#usage)
@@ -11,6 +12,8 @@
     - [Configuration](#configuration)
 4. [Options](#options)
 5. [Troubleshooting](#troubleshooting)
+
+## Ansible Updates
 
 ## Purpose
 
