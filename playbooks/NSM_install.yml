@@ -1,97 +1,97 @@
-# ---
-# - name: Install and Configure NSM Lite
-#   hosts: all
-#   become: yes
+---
+- name: Install and Configure NSM Lite
+  hosts: all
+  become: yes
 
-#   tasks:
-#     - name: Import RPM GPG key for ELRepo
-#       ansible.builtin.rpm_key:
-#         state: present
-#         key: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+  tasks:
+    - name: Import RPM GPG key for ELRepo
+      ansible.builtin.rpm_key:
+        state: present
+        key: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 
-#     - name: Enable CodeReady Linux Builder (CRB) repository
-#       ansible.builtin.command:
-#         cmd: dnf config-manager --set-enabled crb
+    - name: Enable CodeReady Linux Builder (CRB) repository
+      ansible.builtin.command:
+        cmd: dnf config-manager --set-enabled crb
 
-#     - name: Install EPEL Repository
-#       ansible.builtin.dnf:
-#         name: epel-release
-#         state: present
+    - name: Install EPEL Repository
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
 
-#     - name: Add Docker CE Repository
-#       ansible.builtin.dnf:
-#         name: dnf-utils
-#         state: present
-#       register: dnf_utils_installed
+    - name: Add Docker CE Repository
+      ansible.builtin.dnf:
+        name: dnf-utils
+        state: present
+      register: dnf_utils_installed
 
-#     - name: Add Docker repository
-#       ansible.builtin.command:
-#         cmd: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-#       when: dnf_utils_installed is changed
+    - name: Add Docker repository
+      ansible.builtin.command:
+        cmd: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      when: dnf_utils_installed is changed
 
-#     - name: Update all packages to the latest version
-#       ansible.builtin.dnf:
-#         name: '*'
-#         state: latest
+    - name: Update all packages to the latest version
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
 
-#     - name: Install general system dependencies
-#       ansible.builtin.dnf:
-#         name:
-#           - tar
-#           - htop
-#           - git
-#           - vim
-#           - wget
-#           - util-linux-user
-#           - net-tools
-#           - unzip
-#           - expect
-#         state: present
+    - name: Install general system dependencies
+      ansible.builtin.dnf:
+        name:
+          - tar
+          - htop
+          - git
+          - vim
+          - wget
+          - util-linux-user
+          - net-tools
+          - unzip
+          - expect
+        state: present
 
-#     - name: Install dependencies for Zeek
-#       ansible.builtin.dnf:
-#         name:
-#           - cmake
-#           - make
-#           - gcc
-#           - gcc-c++
-#           - flex
-#           - bison
-#           - libpcap-devel
-#           - openssl-devel
-#           - python3
-#           - python3-devel
-#           - swig
-#           - zlib-devel
-#         state: present
+    - name: Install dependencies for Zeek
+      ansible.builtin.dnf:
+        name:
+          - cmake
+          - make
+          - gcc
+          - gcc-c++
+          - flex
+          - bison
+          - libpcap-devel
+          - openssl-devel
+          - python3
+          - python3-devel
+          - swig
+          - zlib-devel
+        state: present
 
-#     - name: Install dependencies for Suricata
-#       ansible.builtin.dnf:
-#         name:
-#           - pcre-devel
-#           - libyaml-devel
-#           - jansson-devel
-#           - lua-devel
-#           - file-devel
-#           - nspr-devel
-#           - nss-devel
-#           - libcap-ng-devel
-#           - libmaxminddb-devel
-#           - lz4-devel
-#           - rustc
-#           - cargo
-#           - python3-pyyaml
-#         state: present
+    - name: Install dependencies for Suricata
+      ansible.builtin.dnf:
+        name:
+          - pcre-devel
+          - libyaml-devel
+          - jansson-devel
+          - lua-devel
+          - file-devel
+          - nspr-devel
+          - nss-devel
+          - libcap-ng-devel
+          - libmaxminddb-devel
+          - lz4-devel
+          - rustc
+          - cargo
+          - python3-pyyaml
+        state: present
 
-#     - name: Ensure pip is installed (Python package manager)
-#       ansible.builtin.dnf:
-#         name: python3-pip
-#         state: present
+    - name: Ensure pip is installed (Python package manager)
+      ansible.builtin.dnf:
+        name: python3-pip
+        state: present
 
-#     - name: Install pexpect using pip
-#       ansible.builtin.pip:
-#         name: pexpect
-#         state: present
+    - name: Install pexpect using pip
+      ansible.builtin.pip:
+        name: pexpect
+        state: present
 
 - name: Install and Configure Elasticsearch
   hosts: all
