@@ -82,7 +82,7 @@ If you setup your inventory file correctly, you should get green "ok" response.
 
 If you want to install on your local machine you will uncomment lines 11 and 12 and it will look like the following:
 
-![](images/Screenshot%202023-12-04%20at%205.45.37 PM.png)
+![](https://github.com/jonezy35/NSM-Lite/blob/main/Images/Screenshot%202023-12-04%20at%205.45.37%E2%80%AFPM.png)
 
 Once you have edited and saved your `inventory.yml` file, you can now install with:
 
