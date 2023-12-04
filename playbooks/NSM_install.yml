@@ -2,8 +2,21 @@
 - name: Install and Configure NSM Lite
   hosts: all
   become: yes
+  vars_prompt:
+    - name: elastic_password
+      prompt: "Enter the password for the 'elastic' user"
+      private: yes
+      confirm: yes
+    - name: kibana_system_password
+      prompt: "Enter the password for the 'kibana_system' user"
+      private: yes
+      confirm: yes
 
   tasks:
+    - name: Set global facts for passwords
+      set_fact:
+        global_elastic_password: "{{ elastic_password }}"
+        global_kibana_system_password: "{{ kibana_system_password }}"
     - name: Import RPM GPG key for ELRepo
       ansible.builtin.rpm_key:
         state: present
@@ -98,15 +111,6 @@
   become: yes
   vars:
     elastic_version: "8.7.0"
-  vars_prompt:
-    - name: elastic_password
-      prompt: "Enter the password for the 'elastic' user"
-      private: yes
-      confirm: yes
-    - name: kibana_system_password
-      prompt: "Enter the password for the 'kibana_system' user"
-      private: yes
-      confirm: yes
 
   tasks:
     - name: Import Elasticsearch GPG key
@@ -150,8 +154,8 @@
         command: "sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i"
         responses:
           (?i)Please confirm that you would like to continue \[y/N\]: "y"
-          (?i)Enter password for \[elastic\]: "{{ elastic_password }}"
-          (?i)Re-enter password for \[elastic\]: "{{ elastic_password }}"
+          (?i)Enter password for \[elastic\]: "{{ global_elastic_password }}"
+          (?i)Re-enter password for \[elastic\]: "{{ global_elastic_password }}"
         timeout: 60
       become: yes
       ignore_errors: yes
@@ -161,19 +165,11 @@
         command: "sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u kibana_system -i"
         responses:
           (?i)Please confirm that you would like to continue \[y/N\]: "y"
-          (?i)Enter password for \[kibana_system\]: "{{ kibana_system_password }}"
-          (?i)Re-enter password for \[kibana_system\]: "{{ kibana_system_password }}"
+          (?i)Enter password for \[kibana_system\]: "{{ global_kibana_system_password }}"
+          (?i)Re-enter password for \[kibana_system\]: "{{ global_kibana_system_password }}"
         timeout: 60
       become: yes
       ignore_errors: yes
-
-    - name: Set kibana_system_password_temp fact
-      set_fact:
-        kibana_system_password_temp: "{{ kibana_system_password }}"
-
-    - name: Set elastic_password fact
-      set_fact:
-        elastic_password_temp: "{{ elastic_password }}"
 
   handlers:
     - name: reload elasticsearch
@@ -211,7 +207,7 @@
       ansible.builtin.lineinfile:
         path: /etc/kibana/kibana.yml
         regexp: '^elasticsearch.password:'
-        line: "elasticsearch.password: '{{ kibana_system_password_temp }}'"
+        line: "elasticsearch.password: '{{ global_kibana_system_password }}'"
         backrefs: yes
       notify: 
         - reload kibana
@@ -386,8 +382,7 @@
       ansible.builtin.lineinfile:
         path: /etc/filebeat/filebeat.yml
         regexp: '^output.elasticsearch.password:'
-        line: "output.elasticsearch.password: '{{ elastic_password_temp }}'"
-        backrefs: yes
+        line: "output.elasticsearch.password: '{{ global_elastic_password }}'"
       notify: 
         - reload filebeat
 
