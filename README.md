@@ -70,6 +70,8 @@ You will then need to edit the `inventory.yml` file to specify where you want to
 
 If you want to install on a remote machine you will uncomment lines 6-9 and it will look like the following:
 
+![](images/Screenshot%202023-12-04%20at%205.45.51 PM.png)
+
 If you don't have an ssh key file and don't want to generate one, you can leave line 9 commented out and add `--ask-pass` to every command you run (to authenticate with the remote machine). 
 
 If you wish to test your ansible connection to the remote host, you can use the `ping_test.yml` playbook provided. Simply run:
@@ -79,6 +81,8 @@ If you wish to test your ansible connection to the remote host, you can use the 
 If you setup your inventory file correctly, you should get green "ok" response.
 
 If you want to install on your local machine you will uncomment lines 11 and 12 and it will look like the following:
+
+![](images/Screenshot%202023-12-04%20at%205.45.37 PM.png)
 
 Once you have edited and saved your `inventory.yml` file, you can now install with:
 
