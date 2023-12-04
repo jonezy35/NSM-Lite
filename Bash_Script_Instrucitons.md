@@ -15,15 +15,13 @@
 
 ## Ansible Updates
 
-This has now been automated with Ansible. The `install.sh` bash script will be left as is for those who do not wish to use Ansible, but all future updates will use Ansible. I will be updating the instructions to use Ansible.
+This has now been automated with Ansible. The `install.sh` bash script will be left as is for those who do not wish to use Ansible, but it will not be maintained moving forward. If you wish to have the most up to date configureation the Ansible playbooks are what you should use. 
 
-If you would like to still use the old `install.sh` bash script access those instructions [here]()
+You can access the Ansible instructions [here]()
 
 ## Purpose
 
-This repository contains Ansible playbooks which will automatically deploy a Network Security Monitoring (NSM) kit, which includes Elasticsearch, Kibana, Filebeat, Zeek, and Suricata. The purpose of this project is to simplify the setup process and provide an efficient method for deploying a light weight,  fully functional NSM environment.
-
-These playbooks can be used to setup an NSM kit on a remote machine or locally to setup an NSM kit on your local machine.
+This repository contains an automated installation script for a Network Security Monitoring (NSM) kit, which includes Elasticsearch, Kibana, Filebeat, Zeek, and Suricata. The purpose of this project is to simplify the setup process and provide an efficient method for deploying a light weight,  fully functional NSM environment.
 
 Out of the box I've included a few PCAP files which can be used to provide some test logs to work through. If you have a promiscuous interface setup and would prefer to capture from that, I'll provide instructions for that as well.
 
@@ -50,12 +48,8 @@ This script has been built and tested with Alma Linux 9.1 [Download Alma Linux 9
 
 I have tested this down to 2 CPU's and 4Gb RAM. More is recommended but it will install successfully on that.
 
-It is required that you have sudo permissions and have `git` and Ansible installed. If you don't have git, you can install it with the following command:
+It is required that you have sudo permissions and have `git` installed. If you don't have git, you can install it with the following command
 `sudo dnf install git -y`
-
-For Ansible:
-
-`sudo yum install ansible -y`
 
 ### Installation
 Simply run the following commands to get this up and running. The time it takes to install varies depending on your hardware and network speed. Generally the more CPU cores you have the faster the install will be.
@@ -64,41 +58,14 @@ Simply run the following commands to get this up and running. The time it takes 
 git clone https://github.com/jonezy35/NSM-Lite.git
 
 cd NSM-Lite
+
+sudo ./Install.sh
 ```
-
-You will then need to edit the `inventory.yml` file to specify where you want to install.
-
-If you want to install on a remote machine you will uncomment lines 6-9 and it will look like the following:
-
-If you don't have an ssh key file and don't want to generate one, you can leave line 9 commented out and add `--ask-pass` to every command you run (to authenticate with the remote machine). 
-
-If you wish to test your ansible connection to the remote host, you can use the `ping_test.yml` playbook provided. Simply run:
-
-`ansible-playbook playbooks/ping_test.yml`
-
-If you setup your inventory file correctly, you should get green "ok" response.
-
-If you want to install on your local machine you will uncomment lines 11 and 12 and it will look like the following:
-
-Once you have edited and saved your `inventory.yml` file, you can now install with:
-
-`ansible-playbook playbooks/NSM_install.yml --ask-become`
-
-`--ask-become` will prompt for the sudo password for the machine you are installing the NSM kit on.
-
-The playbook will then prompt you to input your desired password for the `elastic` user and the `kibana_system` user.
-
 Once installed, you can access kibana at http://\<your IP\>:5601
 
-The default login credentials are `elastic` and `<the password you chose for the elastic user>`
+The default login credentials are `elastic` and `password`
 
-The install can take awhile depending on how many CPU cores you have and what other processes you are running. However, the install is completely automated after this step, so feel free to walk away, have some coffee, play some video games. The NSM install will be ready for you when you return.
-
-Once the installation is complete, you can utilize the provided PCAP to create logs for analysis with the following command:
-
-`ansible-playbook playbooks/run_pcap.yml --ask-become`
-
-This playbook will populate your kibana dashboard/ discover with logs from February of 2022 for analysis.
+Once the installation is complete, you can utilize the provided PCAP to create logs for analysis.
  
 
 ## PCAP
@@ -158,7 +125,7 @@ curl --insecure -X POST "https://localhost:9200/your_index_name/_delete_by_query
 ```
 
 ### Configuration
-If you wish to change the passwords after you set them, you can do so with the `elasticsearch-reset-password` utility. Simply run `sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i` <u>**NOTE**</u>: If you update the default elastic password, you will also have to update it in the filebeat.yml at `/etc/filebeat/filebeat.yml`
+If you wish to change the default password, you can do so with the `elasticsearch-reset-password` utility. Simply run `sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -i` <u>**NOTE**</u>: If you update the default elastic password, you will also have to update it in the filebeat.yml at `/etc/filebeat/filebeat.yml`
 
 
 ## Options
