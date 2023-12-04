@@ -17,7 +17,7 @@
 
 This has now been automated with Ansible. The `install.sh` bash script will be left as is for those who do not wish to use Ansible, but it will not be maintained moving forward. If you wish to have the most up to date configureation the Ansible playbooks are what you should use. 
 
-You can access the Ansible instructions [here]()
+You can access the Ansible instructions [here](https://github.com/jonezy35/NSM-Lite/blob/main/README.md)
 
 ## Purpose
 

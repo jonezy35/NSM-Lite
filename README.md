@@ -17,7 +17,7 @@
 
 This has now been automated with Ansible. The `install.sh` bash script will be left as is for those who do not wish to use Ansible, but all future updates will use Ansible. I will be updating the instructions to use Ansible.
 
-If you would like to still use the old `install.sh` bash script access those instructions [here]()
+If you would like to still use the old `install.sh` bash script access those instructions [here](https://github.com/jonezy35/NSM-Lite/blob/main/Bash_Script_Instrucitons.md)
 
 ## Purpose
 
