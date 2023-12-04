@@ -70,7 +70,7 @@ You will then need to edit the `inventory.yml` file to specify where you want to
 
 If you want to install on a remote machine you will uncomment lines 6-9 and it will look like the following:
 
-![](images/Screenshot%202023-12-04%20at%205.45.51 PM.png)
+![](https://github.com/jonezy35/NSM-Lite/blob/main/Images/Screenshot%202023-12-04%20at%205.45.51%E2%80%AFPM.png)
 
 If you don't have an ssh key file and don't want to generate one, you can leave line 9 commented out and add `--ask-pass` to every command you run (to authenticate with the remote machine). 
 
