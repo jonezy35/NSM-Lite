@@ -15,6 +15,10 @@
 
 ## Ansible Updates
 
+This has now been automated with Ansible. The `install.sh` bash script will be left as it for those who do not wish to use Ansible, but all future updates will use Ansible. I will be updating the instructions to use Ansible.
+
+To get started, install Ansible with `sudo yum install ansible -y`
+
 ## Purpose
 
 This repository contains an automated installation script for a Network Security Monitoring (NSM) kit, which includes Elasticsearch, Kibana, Filebeat, Zeek, and Suricata. The purpose of this project is to simplify the setup process and provide an efficient method for deploying a light weight,  fully functional NSM environment.
